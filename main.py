@@ -1,9 +1,9 @@
 #Gerenciador de atividade financeiras
 import os.path
 import time
-from carregartexto import lerArquivo
+from arquivosload import clear, lerArquivo, armazenarDados, carregarDados
 
-
+contas = carregarDados('dados/contas.json')
 def main():
 
     lerArquivo('menu')
