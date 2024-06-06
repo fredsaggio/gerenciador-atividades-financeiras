@@ -4,12 +4,12 @@ import time
 from arquivosload import clear, lerArquivo, armazenarDados, carregarDados
 
 contas = carregarDados('dados/contas.json')
-def main():
+def menu_gerenciador():
 
-    lerArquivo('menu')
+    lerArquivo('arquivostexto/menu.txt')
 
     while True:
-        entrada = input(f'\nEscolha uma das opções acima: ')
+        entrada = input('\nEscolha uma das opções acima: ')
         try:
             funcao = int(entrada)
         except ValueError:
@@ -73,4 +73,4 @@ def main():
             print("Obrigado por usar nossa plataforma GAF!", "GAF: O seu amigo das finanças ;)!", sep="\n")
             break
 
-main()
+menu_gerenciador()
