@@ -30,3 +30,12 @@ def carregarDados(arquivo):
 def armazenarDados(arquivo, conteudo):
     with open(arquivo, 'a', encoding='utf-8') as arquivoo:
         json.dump(conteudo, arquivoo)
+
+def validar_entrada(entrada, valor):
+    while True:
+        try:
+            valor = float(entrada)
+            return valor
+            break
+        except ValueError:
+            print("Entrada inválida! Digite apenas números.")

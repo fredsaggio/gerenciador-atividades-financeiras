@@ -1,7 +1,7 @@
 #Gerenciador de atividade financeiras
 import os.path
 import time
-from arquivosload import clear, lerArquivo, armazenarDados, carregarDados
+from arquivosload import *
 
 contas = carregarDados('dados/contas.json')
 def menu_gerenciador():
@@ -10,67 +10,67 @@ def menu_gerenciador():
 
     while True:
         entrada = input('\nEscolha uma das opções acima: ')
-        try:
-            funcao = int(entrada)
-        except ValueError:
-            print("Entrada inválida. Vamos! Digite apenas a opção 1, 2 ou 3.")
-            continue
-        if funcao == 1:
-            print("Boa escolha!",
-                "Farei algumas operações para mostrar o saldo restante após pagamentos de contas.",
-                "Para isso, preciso de alguns dados. Preencha de acordo com a indicação abaixo. ", sep="\n")
+        
+        if entrada == '1':
             while True:
-                sal = input("Digite seu saldo, capital que será utilizado para as finanças: ")
-                try:
-                    saldo = float(sal)
+                clear()
+                print("Preencha com seus dados de acordo com a indicação abaixo.")
+                saldo = input('Digite o saldo: ')
+                if not saldo.isnumeric():
+                        print("Entrada inválida! Digite apenas números.")
+                else:
+                    saldo_int = int(saldo)
                     break
-                except ValueError:
-                    print("Entrada inválida! Digite apenas números.")
             while True:
-                qd = input("Digite a quantidade de gastos, dívidas, produtos... a se pagar: ")
-                try:
-                    quant = int(qd)
-                    break
-                except ValueError:
+                quantidade = input("Digite a quantidade de gastos, dívidas ou produtos a se pagar: ")
+                if not quantidade.isnumeric():
                     print("Entrada inválida! Digite apenas números.")
+                else:
+                    quantidade_int = int(quantidade)
+                    break
             produtos = []
             dividas = 0.0
-            for i in range(quant):
-                nd = input(f"Me diga o NOME da dívida/produto {i+1}: ")
+            for i in range(quantidade_int):
+                nome_divida = input(f"Me diga o NOME da dívida/produto {i+1}: ")
                 while True:
-                    vd = input(f"qual o VALOR da dívida/produto {i+1}: ")
-                    try:
-                        valor = float(vd)
-                        break
-                    except ValueError:
+                    valor_divida = input(f"qual o VALOR da dívida/produto {i+1}: ")
+                    if not valor_divida.isnumeric():
                         print("Entrada inválida! Digite apenas números.")
-                dividas += valor
-                produtos.append((nd, valor))
-            for nd, valor in produtos:
-                print(f"Gasto: {nd}, Valor: R$ {valor:.2f}")
-            print(f"O saldo restante para gastos é R$ {saldo-dividas:.2f}")
+                    else:
+                        valor_divida_int = float(valor_divida)
+                        break
+                dividas += valor_divida_int
+                produtos.append((nome_divida, valor_divida_int))
+            for nome_divida, valor_divida_int in produtos:
+                print(f"Gasto: {nome_divida}, Valor: R$ {valor_divida_int:.2f}")
+            print(f"O saldo restante para gastos é R$ {saldo_int - dividas:.2f}")
             while True:
-                cp = input("Deseja continuar no GAF? 1. sim ou 2. não: ")
+                continuar = input("Deseja continuar no GAF? 1. sim ou 2. não: ")
                 try:
-                    c = int(cp)
+                    continuar_int = int(continuar)
                     break
                 except ValueError:
                     print("Entrada inválida! Digite apenas números.")
                     continue
-            if c == 2:
-                print("Obrigado por usar nossa plataforma GAF!", "GAF: O seu amigo das finanças ;)!", sep="\n")
+            if continuar_int == 2:
+                print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;)!")
                 break
             else:
                 print("Voltando...")
         #essas funções ainda não estão prontas
-        elif funcao == 2:
+        elif entrada == '2':
             print("Mapa")
-        elif funcao == 3:
+        elif entrada == '3':
             print("Simulações de investimento")
-        elif funcao == 4:
-            print("Financiamento")
-        else:
-            print("Obrigado por usar nossa plataforma GAF!", "GAF: O seu amigo das finanças ;)!", sep="\n")
+        elif entrada == '4':
+            clear()
+            print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;")
+            time.sleep(1.25)
+            clear()
+            print('Saindo...')
+            time.sleep(1.25)
             break
+        else:
+            print("Valor inválido.")
 
 menu_gerenciador()
