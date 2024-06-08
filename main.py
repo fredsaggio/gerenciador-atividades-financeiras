@@ -4,6 +4,7 @@ from mapa_financeiro import *
 from financiamento import *
 
 def menu_gerenciador():
+    mes = {}
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
@@ -42,7 +43,21 @@ def menu_gerenciador():
                 break
         #essas funções ainda não estão prontas
         elif entrada == '2':
-            print(init_mes(entrada_float("Por favor digite o seu salário!\n->")))
+            opc = 0
+            print("Bem vindo, ao mapa financeiro")
+            print("1 - Criar novo mapa")
+            print("2 - Carregar um existente")
+            print("3 - Sair da função")
+            while opc not in [1,2]:
+                opc = entrada_int("->")
+                if opc not in [1,2]:
+                    print("Por favor, digite somente 1 e 2!")
+            if opc == 1:
+                mes = init_mes(5000)
+                print(mes)
+            elif opc == 2:
+                atualizar_mapa(mes)
+                print(mes)
         elif entrada == '3':
             financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))
         elif entrada == '4':
