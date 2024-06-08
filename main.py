@@ -1,6 +1,7 @@
 from gerenciador import *
 from arquivosload import *
 from mapa_financeiro import *
+from financiamento import *
 
 def menu_gerenciador():
     while True:
@@ -23,17 +24,27 @@ def menu_gerenciador():
                 print(f"Gasto: {nome_divida}, Valor: R$ {valor_divida:.2f}")
             print(f"O saldo restante para gastos é R$ {saldo - dividas:.2f}")
             continuar = entrada_int("Deseja continuar no GAF? 1. sim ou 2. não: ")
-            if continuar == 2:
-                print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;)!")
+            sair_programa = 0
+            while True:
+                if continuar == 2:
+                    clear()
+                    print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;)!")
+                    sair_programa = 1
+                    break
+                elif continuar == 1:
+                    clear()
+                    print("Voltando...")
+                    time.sleep(1.25)
+                    break
+                else:
+                    print("Valor inválido")
+            if sair_programa == 1:
                 break
-            else:
-                print("Voltando...")
-                clear()
         #essas funções ainda não estão prontas
         elif entrada == '2':
             print(init_mes(entrada_float("Por favor digite o seu salário!\n->")))
         elif entrada == '3':
-            print("Simulações de investimento")
+            financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))
         elif entrada == '4':
             clear()
             print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;")
