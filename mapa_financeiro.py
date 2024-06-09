@@ -7,13 +7,13 @@ def init_mes(salario):
     atual = datetime.date.today()
     mes = {"data inicial":atual,"ultimo acesso":0 ,"saldo inicial":0,"semanas":[]}
     while True:
-        print("deseja que o gaf utilize o seu salário como valor inícial para realizar o saldo ou prefere um valor customizado?")
+        print("deseja que o gaf utilize o seu salário como valor inicial para realizar o saldo ou prefere um valor customizado?")
         opc = input("1 - customizado\n2 - automático\n->")
         if opc == '1':
-            sal = entrada_float("saldo customizado:")
+            sal = entrada_float("saldo customizado: ")
             break
         elif opc =='2':
-            gasto = entrada_float("gasto total do mês:")
+            gasto = entrada_float("gasto total do mês até agora: ")
             sal = salario-gasto
             if sal < 0:
                 print("Você não pode fazer um planejamento financeiro no negativo!!\nPor favor digite os valores novamente.")
@@ -39,6 +39,31 @@ def init_mes(salario):
     for y in range(y, len(mes["semanas"])):#    destribui o saldo
         mes["semanas"][y]["saldo"] = sal/(len(mes["semanas"])-semana)
     return mes
+
+def imprimir_mapa(nome, mes, semana):
+    gasto = 0
+    extra = 0
+    saldo_total = 0
+    for x in mes["semanas"][semana]["itens"]:
+        gasto += x[1]
+    for x in mes["semanas"][semana]["extra_i"]:
+        extra += x[1]
+    saldo_total = mes["semanas"][semana]["saldo"]+extra-gasto
+    print(f"Semana {semana+1}:")
+    print(f"\tSaldo inicial da semana: {mes["semanas"][semana]["saldo"]}")
+    print(f"\tSaldo total: {saldo_total}")
+    print(f"\tGasto da semana: {gasto}")
+    cont = 0
+    for x in mes["semanas"][semana]["itens"]:
+        cont += 1
+        print(f"\t - gasto {cont}: {x[0]} = R${x[1]}")
+    print(f"\tRenda extra: {extra}")
+    cont = 0
+    for x in mes["semanas"][semana]["extra_i"]:
+        cont += 1
+        print(f"\t - Extra {cont}: {x[0]} = R${x[1]}")
+    print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]}")
+    print()
 
 def atualizar_mapa(mes, data_atual=datetime.date.today()):
     aux = ''

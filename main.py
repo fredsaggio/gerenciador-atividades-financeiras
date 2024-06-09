@@ -5,6 +5,8 @@ from financiamento import *
 
 def menu_gerenciador():
     mes = {}
+    nome = "Jorge"
+    salario = 3000
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
@@ -44,7 +46,7 @@ def menu_gerenciador():
         #essas funções ainda não estão prontas
         elif entrada == '2':
             opc = 0
-            print("Bem vindo, ao mapa financeiro")
+            print("\nBem vindo, ao mapa financeiro\n")
             print("1 - Criar novo mapa")
             print("2 - Carregar um existente")
             print("3 - Sair da função")
@@ -53,11 +55,34 @@ def menu_gerenciador():
                 if opc not in [1,2]:
                     print("Por favor, digite somente 1 e 2!")
             if opc == 1:
-                mes = init_mes(5000)
-                print(mes)
+                clear()
+                mes = init_mes(salario)
+                print()
+                imprimir_mapa(nome, mes, mes["ultimo acesso"])
             elif opc == 2:
                 atualizar_mapa(mes)
-                print(mes)
+                opc = 0
+                while opc != 4:
+                    clear()
+                    print("Semana atual")
+                    imprimir_mapa(nome, mes, mes["ultimo acesso"])
+                    print("\n1 - Adicionar gasto\n2 - Adicionar renda extra\n3 - imprimit todas as semanas")
+                    print("4 - sair")
+                    opc = 0
+                    while opc not in [1,2,3,4]:
+                        opc = entrada_int("\n->")
+                        if opc not in [1,2,3,4]:
+                            print("Por favor, digite somente os números mostrado no menu!")
+                    if opc == 1:
+                        adicionar_itens(mes, mes["ultimo acesso"])
+                    elif opc == 2:
+                        adicionar_itens(mes, mes["ultimo acesso"], 1)
+                    elif opc == 3:
+                        clear()
+                        for x in range(mes["ultimo acesso"]+1):
+                            imprimir_mapa(nome, mes, x)
+                        input("De enter para voltar...")
+                clear()
         elif entrada == '3':
             financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))
         elif entrada == '4':
