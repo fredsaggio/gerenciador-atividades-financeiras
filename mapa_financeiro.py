@@ -50,14 +50,14 @@ def imprimir_mapa(nome, mes, semana):
         extra += x[1]
     saldo_total = mes["semanas"][semana]["saldo"]+extra-gasto
     print(f"Semana {semana+1}:")
-    print(f"\tSaldo inicial da semana: {mes["semanas"][semana]["saldo"]:.2f}")
-    print(f"\tSaldo total: {saldo_total:.2f}")
-    print(f"\tGasto da semana: {gasto:.2f}")
+    print(f"\tSaldo inicial da semana: R${mes["semanas"][semana]["saldo"]:.2f}")
+    print(f"\tSaldo total: R${saldo_total:.2f}")
+    print(f"\tGasto da semana: R${gasto:.2f}")
     cont = 0
     for x in mes["semanas"][semana]["itens"]:
         cont += 1
         print(f"\t - gasto {cont}: {x[0]} = R${x[1]:.2f}")
-    print(f"\tRenda extra: {extra:.2f}")
+    print(f"\tRenda extra: R${extra:.2f}")
     cont = 0
     for x in mes["semanas"][semana]["extra_i"]:
         cont += 1
@@ -114,7 +114,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                     saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
             mes["semanas"][semana_atual]["saldo"] += saldo_acumulado
             mes["ultimo acesso"] = semana_atual
-    elif data_atual.year > mes["data inicial"].year or data_atual.month > mes["data inicial"].month:
+    elif (data_atual.year > mes["data inicial"].year or data_atual.month > mes["data inicial"].month) and mes["finalizado"] == False:
         if data_atual.year-mes["data inicial"].year > 1 or data_atual.month-mes["data inicial"].month > 1:
             aux = 's'
             aux2 = 'meses'
@@ -163,10 +163,11 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
             for y in mes["semanas"][-1]["extra_i"]:
                 extra += y[1]
             mes["semanas"][-1]["extra"] = extra
-            saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
-            mes["semanas"][-1]["saldo"] = saldo_acumulado
+            mes["semanas"][-1]["saldo"] += saldo_acumulado
             mes["ultimo acesso"] = len(mes["semanas"])-1
             mes["finalizado"] = True
+    elif mes["finalizado"] == True:
+        print("Mapa financeiro Finalizada")
     else:
         print("Variável inválida")
 
