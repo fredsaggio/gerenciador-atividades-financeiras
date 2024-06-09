@@ -5,7 +5,7 @@ from gerenciador import *
 
 def init_mes(salario):
     atual = datetime.date.today()
-    mes = {"data inicial":atual,"ultimo acesso":0 ,"saldo inicial":0,"semanas":[]}
+    mes = {"data inicial":atual,"ultimo acesso":0 ,"saldo inicial":0,"semanas":[], "finalizado": False}
     while True:
         print("deseja que o gaf utilize o seu salário como valor inicial para realizar o saldo ou prefere um valor customizado?")
         opc = input("1 - customizado\n2 - automático\n->")
@@ -50,19 +50,27 @@ def imprimir_mapa(nome, mes, semana):
         extra += x[1]
     saldo_total = mes["semanas"][semana]["saldo"]+extra-gasto
     print(f"Semana {semana+1}:")
-    print(f"\tSaldo inicial da semana: {mes["semanas"][semana]["saldo"]}")
-    print(f"\tSaldo total: {saldo_total}")
-    print(f"\tGasto da semana: {gasto}")
+    print(f"\tSaldo inicial da semana: {mes["semanas"][semana]["saldo"]:.2f}")
+    print(f"\tSaldo total: {saldo_total:.2f}")
+    print(f"\tGasto da semana: {gasto:.2f}")
     cont = 0
     for x in mes["semanas"][semana]["itens"]:
         cont += 1
-        print(f"\t - gasto {cont}: {x[0]} = R${x[1]}")
-    print(f"\tRenda extra: {extra}")
+        print(f"\t - gasto {cont}: {x[0]} = R${x[1]:.2f}")
+    print(f"\tRenda extra: {extra:.2f}")
     cont = 0
     for x in mes["semanas"][semana]["extra_i"]:
         cont += 1
-        print(f"\t - Extra {cont}: {x[0]} = R${x[1]}")
-    print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]}")
+        print(f"\t - Extra {cont}: {x[0]} = R${x[1]:.2f}")
+    if mes["data inicial"].year == datetime.date.today().year and mes["data inicial"].month == datetime.date.today().month:
+        if mes["semanas"][semana]["ultimo dia"] == datetime.date.today().day:
+            print("Essa semana terminara HOJE!")
+        elif mes["semanas"][semana]["ultimo dia"] > datetime.date.today().day:
+            print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]} desse mês.")
+        else:
+            print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]} desse mês.")
+    else:
+        print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]}/{mes["data inicial"].month}")
     print()
 
 def atualizar_mapa(mes, data_atual=datetime.date.today()):
@@ -158,6 +166,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
             saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
             mes["semanas"][-1]["saldo"] = saldo_acumulado
             mes["ultimo acesso"] = len(mes["semanas"])-1
+            mes["finalizado"] = True
     else:
         print("Variável inválida")
 
