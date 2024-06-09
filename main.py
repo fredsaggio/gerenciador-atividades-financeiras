@@ -1,7 +1,4 @@
-from gerenciador import *
-from arquivosload import *
-from mapa_financeiro import *
-from financiamento import *
+from funcao import *
 
 def menu_gerenciador():
     mes = {}
