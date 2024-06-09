@@ -1,5 +1,6 @@
-import datetime 
+import datetime
 import calendar
+from os.path import exists
 from math import ceil
 from .gerenciador import *
 
@@ -73,6 +74,56 @@ def imprimir_mapa(nome, mes, semana):
         print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]}/{mes["data inicial"].month}")
     print()
 
+def imprimir_txt_mapa(mes, nome):
+    with open("Mapa financeiro.txt", "w") as file:
+        file.write("")
+    with open("Mapa financeiro.txt", "a") as file:
+        gasto_t = 0
+        extra_t = 0
+        saldo_total_m = 0
+        data = mes["data inicial"]
+        data_atual = datetime.date.today()
+        for x in mes["semanas"]:
+            for y in x["itens"]:
+                gasto_t += y[1]
+            for y in x["extra_i"]:
+                extra_t += y[1]
+        saldo_total_m = mes["saldo inicial"]+extra_t-gasto_t
+        file.writelines(f"Mapa financeiro de {nome} iniciado em {data.day}/{data.month}/{data.year}\n")
+        file.writelines(f"\nSaldo inicial do mês: R${mes["saldo inicial"]:.2f}\n")
+        file.writelines(f"Saldo total do mês: R${saldo_total_m:.2f}\n")
+        file.writelines(f"Gasto total do mês: R${gasto_t:.2f}\n")
+        file.writelines(f"Renda extra total do mês: {extra_t:.2f}\n")
+        file.writelines(f"\nSemanas do dia 1/{data.month} á {mes["semanas"][-1]["ultimo dia"]}/{data.month}\n\n")
+        for x in range(len(mes["semanas"])):
+            gasto = 0
+            extra = 0
+            saldo_total = 0
+            for y in mes["semanas"][x]["itens"]:
+                gasto += y[1]
+            for y in mes["semanas"][x]["extra_i"]:
+                extra += y[1]
+            saldo_total = mes["semanas"][x]["saldo"]+extra-gasto
+            if x == 0:
+                file.writelines(f"semana 1/{data.month} - {mes["semanas"][x]["ultimo dia"]}/{data.month}:\n")
+            else:
+                file.writelines(f"semana {mes["semanas"][x-1]["ultimo dia"]}/{data.month} - {mes["semanas"][x]["ultimo dia"]}/{data.month}:\n")
+            file.writelines(f"\tSaldo inicial da semana: R${mes["semanas"][x]["saldo"]:.2f}\n")
+            file.writelines(f"\tSaldo total: R${saldo_total:.2f}\n")
+            file.writelines(f"\tGasto da semana: R${gasto:.2f}\n")
+            cont = 0
+            for y in mes["semanas"][x]["itens"]:
+                cont += 1 
+                file.writelines(f"\t - Gasto {cont}: {y[0]} = R${y[1]:.2f}\n")
+            file.writelines(f"\tRenda extra: R${extra:.2f}\n")
+            cont = 0
+            for y in mes["semanas"][x]["extra_i"]:
+                cont += 1 
+                file.writelines(f"\t - Extra {cont}: {y[0]} = R${y[1]:.2f}\n")
+            file.writelines("\n")
+        file.writelines(f"Arquivo txt criado no dia {data_atual.day}/{data_atual.month}/{data_atual.year}")
+    print("arquivo \"Mapa financeiro.txt\" criado com secesso!")
+
 def atualizar_mapa(mes, data_atual=datetime.date.today()):
     aux = ''
     aux2 = ''
@@ -124,7 +175,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
             print(f"Já se passou {data_atual.month-mes["data inicial"].month} {aux2} desde o último acesso, deseja finalizar o mapa mental?")
         else:
             print(f"Já se passou {data_atual.year-mes["data inicial"].year} ano{aux} desde o último acesso, deseja finalizar o mapa mental?")
-        print("Obs: caso não finalize deletaremos TODAS as informações do mapa")
+        print("Obs: caso não finalize deletaremos TODAS as informações do mapa serão perdidas!")
         while opc not in [1, 2]:
             opc = entrada_int("1 - sim\n2 - não\n->")
             if opc not in [1, 2]:

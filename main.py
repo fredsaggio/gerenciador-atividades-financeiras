@@ -1,9 +1,6 @@
 from funcao import *
 
-def menu_gerenciador():
-    mes = {}
-    nome = "Jorge"
-    salario = 3000
+def menu_gerenciador(nome, mes={}, salario=5000):
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
@@ -60,17 +57,17 @@ def menu_gerenciador():
                 if len(mes) > 0:
                     atualizar_mapa(mes)
                     opc = 0
-                    while opc != 4:
+                    while opc != 4 and mes["finalizado"] == False:
                         clear()
                         print("Semana atual")
                         imprimir_mapa(nome, mes, mes["ultimo acesso"])
-                        print("\n1 - Adicionar gasto\n2 - Adicionar renda extra\n3 - imprimit todas as semanas")
-                        print("4 - sair")
+                        print("\n1 - Adicionar gasto\n2 - Adicionar renda extra\n3 - Imprimit todas as semanas")
+                        print("4 - Sair")
                         opc = 0
                         while opc not in [1,2,3,4]:
                             opc = entrada_int("\n->")
                             if opc not in [1,2,3,4]:
-                                print("Por favor, digite somente os números mostrado no menu!")
+                                print("Por favor, digite somente os 1, 2, 3 ou 4!")
                         if opc == 1:
                             adicionar_itens(mes, mes["ultimo acesso"])
                         elif opc == 2:
@@ -80,6 +77,26 @@ def menu_gerenciador():
                             for x in range(mes["ultimo acesso"]+1):
                                 imprimir_mapa(nome, mes, x)
                             input("Dê enter para voltar...")
+                    while opc != 3 and mes["finalizado"] == True:
+                        clear()
+                        print("Última semana do mapa financeiro")
+                        imprimir_mapa(nome, mes, mes["ultimo acesso"])
+                        print("\n1 - Imprimir todas as semanas\n2 - Criar arquivo txt do mapa financeiro\n3 - Sair")
+                        opc = 0 
+                        while opc not in [1,2,3]:
+                            opc = entrada_int("->")
+                            if opc not in [1,2,3]:
+                                print("Por favor, digite somente os números 1, 2 ou 3!")
+                        if opc == 1:
+                            clear()
+                            for x in range(mes["ultimo acesso"]+1):
+                                imprimir_mapa(nome, mes, x)
+                            input("Dê enter para voltar...")
+                        elif opc == 2:
+                            clear()
+                            imprimir_txt_mapa(mes, nome)
+                            time.sleep(1.25)
+
                     clear()
                 else:
                     print("\nNão há mapa financeiro para carregar, por favor inicie uma!\n")
@@ -96,5 +113,5 @@ def menu_gerenciador():
         else:
             print("Valor inválido.")
 
-menu_gerenciador()
+menu_gerenciador("Rodrigo", {'data inicial': datetime.date(2024, 6, 9), 'ultimo acesso': 4, 'saldo inicial': 8000.0, 'semanas': [{'saldo': 0, 'gasto': 0, 'extra': 0, 'ultimo dia': 2, 'itens': [], 'extra_i': []}, {'saldo': 0, 'gasto': 0, 'extra': 0, 'ultimo dia': 9, 'itens': [], 'extra_i': []}, {'saldo': 2666.6666666666665, 'gasto': 800.0, 'extra': 0, 'ultimo dia': 16, 'itens': [['test', 600.0], ['0', 200.0]], 'extra_i': []}, {'saldo': 2666.6666666666665, 'gasto': 900.0, 'extra': 0, 'ultimo dia': 23, 'itens': [['coids', 900.0]], 'extra_i': []}, {'saldo': 6300.0, 'gasto': 200.0, 'extra': 0, 'ultimo dia': 30, 'itens': [['asdf', 200.0]], 'extra_i': []}], 'finalizado': True})
 
