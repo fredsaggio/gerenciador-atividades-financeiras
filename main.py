@@ -1,6 +1,7 @@
 from funcao import *
 
-def menu_gerenciador(nome, mes={}, salario=5000):
+
+def menu_gerenciador():
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
@@ -39,6 +40,9 @@ def menu_gerenciador(nome, mes={}, salario=5000):
                 break
         #essas funções ainda não estão prontas
         elif entrada == '2':
+            print('Carregando...')
+            time.sleep(1.25)
+            clear()
             opc = 0
             print("\nBem vindo, ao mapa financeiro\n")
             print("1 - Criar novo mapa")
@@ -50,9 +54,11 @@ def menu_gerenciador(nome, mes={}, salario=5000):
                     print("Por favor, digite somente 1 e 2!")
             if opc == 1:
                 clear()
-                mes = init_mes(salario)
+                nome = input('Digite seu nome: ')
+                mes = init_mes()
                 print()
                 imprimir_mapa(nome, mes, mes["ultimo acesso"])
+                armazenarDados('dados/dados.json', mes)
             elif opc == 2:
                 if len(mes) > 0:
                     atualizar_mapa(mes)
@@ -113,5 +119,5 @@ def menu_gerenciador(nome, mes={}, salario=5000):
         else:
             print("Valor inválido.")
 
-menu_gerenciador("Rodrigo", {'data inicial': datetime.date(2024, 6, 10), 'ultimo acesso': 4, 'saldo inicial': 5000.0, 'semanas': [{'saldo': 0, 'gasto': 0, 'extra': 0, 'ultimo dia': 2, 'itens': [], 'extra_i': []}, {'saldo': 0, 'gasto': 0, 'extra': 0, 'ultimo dia': 9, 'itens': [], 'extra_i': []}, {'saldo': 1666.6666666666667, 'gasto': 500.0, 'extra': 0, 'ultimo dia': 16, 'itens': [['tete', 500.0]], 'extra_i': []}, {'saldo': 1666.6666666666667, 'gasto': 600.0, 'extra': 0, 'ultimo dia': 23, 'itens': [['asdf', 600.0]], 'extra_i': []}, {'saldo': 3900.0, 'gasto': 300.0, 'extra': 0, 'ultimo dia': 30, 'itens': [['fgghg', 300.0]], 'extra_i': []}], 'finalizado': True})
 
+menu_gerenciador()
