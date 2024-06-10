@@ -1,5 +1,3 @@
-#chatgpt
-
 from .gerenciador import *
 
 def financiamento(saldo, dias_uteis=252, cdi=0.1195):
