@@ -45,17 +45,13 @@ def imprimir_mapa(nome, mes, semana):
     saldo_total = mes["semanas"][semana]["saldo"]+extra-gasto
     print(f"Semana {semana+1}:")
     print(f"\tSaldo inicial da semana: R${mes["semanas"][semana]["saldo"]:.2f}")
-    print(f"\tSaldo total: R${saldo_total:.2f}")
+    print(f"\tSaldo restante: R${saldo_total:.2f}")
     print(f"\tGasto da semana: R${gasto:.2f}")
-    cont = 0
     for x in mes["semanas"][semana]["itens"]:
-        cont += 1
-        print(f"\t - gasto {cont}: {x[0]} = R${x[1]:.2f}")
+        print(f"\t - gasto {x[2]}/{data.month}: {x[0]} = R${x[1]:.2f}")
     print(f"\tRenda extra: R${extra:.2f}")
-    cont = 0
     for x in mes["semanas"][semana]["extra_i"]:
-        cont += 1
-        print(f"\t - Extra {cont}: {x[0]} = R${x[1]:.2f}")
+        print(f"\t - Extra {x[2]}/{data.month}: {x[0]} = R${x[1]:.2f}")
     if data.year == atual.year and data.month == atual.month:
         if mes["semanas"][semana]["ultimo dia"] == atual.day:
             print("Essa semana terminara HOJE!")
@@ -81,12 +77,16 @@ def imprimir_txt_mapa(mes, nome, semana):
                 gasto_t += y[1]
             for y in mes["semanas"][x]["extra_i"]:
                 extra_t += y[1]
+        if mes["finalizado"] == True and semana == mes["ultimo acesso"]:
+            aux = "do mês"
+        else:
+            aux = "até agora"
         saldo_total_m = mes["saldo inicial"]+extra_t-gasto_t
         file.writelines(f"Mapa financeiro de {nome} iniciado em {data.day}/{data.month}/{data.year}\n")
         file.writelines(f"\nSaldo inicial do mês: R${mes["saldo inicial"]:.2f}\n")
-        file.writelines(f"Saldo total do mês: R${saldo_total_m:.2f}\n")
-        file.writelines(f"Gasto total do mês: R${gasto_t:.2f}\n")
-        file.writelines(f"Renda extra total do mês: {extra_t:.2f}\n")
+        file.writelines(f"Saldo restante {aux}: R${saldo_total_m:.2f}\n")
+        file.writelines(f"Gasto total {aux}: R${gasto_t:.2f}\n")
+        file.writelines(f"Renda extra total {aux}: {extra_t:.2f}\n")
         file.writelines(f"\nSemanas do dia 1/{data.month} á {mes["semanas"][semana]["ultimo dia"]}/{data.month}\n\n")
         for x in range(semana+1):
             gasto = 0
@@ -104,15 +104,11 @@ def imprimir_txt_mapa(mes, nome, semana):
             file.writelines(f"\tSaldo inicial da semana: R${mes["semanas"][x]["saldo"]:.2f}\n")
             file.writelines(f"\tSaldo total: R${saldo_total:.2f}\n")
             file.writelines(f"\tGasto da semana: R${gasto:.2f}\n")
-            cont = 0
             for y in mes["semanas"][x]["itens"]:
-                cont += 1 
-                file.writelines(f"\t - Gasto {cont}: {y[0]} = R${y[1]:.2f}\n")
+                file.writelines(f"\t - Gasto {y[2]}/{data.month}: {y[0]} = R${y[1]:.2f}\n")
             file.writelines(f"\tRenda extra: R${extra:.2f}\n")
-            cont = 0
             for y in mes["semanas"][x]["extra_i"]:
-                cont += 1 
-                file.writelines(f"\t - Extra {cont}: {y[0]} = R${y[1]:.2f}\n")
+                file.writelines(f"\t - Extra {y[2]}/{data.month}: {y[0]} = R${y[1]:.2f}\n")
             file.writelines("\n")
         file.writelines(f"Arquivo txt criado no dia {data_atual.day}/{data_atual.month}/{data_atual.year}")
     print("arquivo \"Mapa financeiro.txt\" criado com secesso!")
@@ -141,6 +137,8 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                     for x in range(mes["ultimo acesso"], semana_atual-1):
                         print(f"Semana {x+1}")
                         adicionar_itens(mes, x)
+                        clear()
+                        adicionar_item(mes, x, 1)
                         clear()
                 print(f"Semana {semana_atual}")
                 adicionar_itens(mes, semana_atual-1)
@@ -219,7 +217,12 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
 def adicionar_itens(mes, semana, itens=0):
     while True:
         valor = 0
-        nome = input("\nDigite o nome do item no qual deseja adicionar.\n Para sair da função deixe a linha em branco e aperte enter.\n->").strip()
+        dia = datetime.date.today().day
+        if itens == 0:
+            aux = "do gasto no"
+        else:
+            aux = "da renda extra na"
+        nome = input(f"\nDigite o nome {aux} qual deseja adicionar.\n Para sair da função deixe a linha em branco e aperte enter.\n->").strip()
         if nome == '':
             break
         while valor <= 0:
@@ -227,7 +230,7 @@ def adicionar_itens(mes, semana, itens=0):
             if valor <= 0:
                 print("O preço não pode ser negativo nem nulo")
         if itens == 1:
-            mes["semanas"][semana]["extra_i"].append([nome,valor])
+            mes["semanas"][semana]["extra_i"].append([nome,valor,dia])
         else:
-            mes["semanas"][semana]["itens"].append([nome,valor])
+            mes["semanas"][semana]["itens"].append([nome,valor,dia])
 
