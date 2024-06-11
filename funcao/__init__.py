@@ -64,17 +64,17 @@ def menu_gerenciador(nome, mes={}):
                 if len(mes) > 0:
                     atualizar_mapa(mes)
                     opc = 0
-                    while opc != 4 and mes["finalizado"] == False:
+                    while opc != 5 and mes["finalizado"] == False:
                         clear()
                         print("Semana atual")
                         imprimir_mapa(nome, mes, mes["ultimo acesso"])
-                        print("\n1 - Adicionar gasto\n2 - Adicionar renda extra\n3 - Imprimit todas as semanas")
-                        print("4 - Sair")
+                        print("\n1 - Adicionar gasto\n2 - Adicionar renda extra\n3 - Imprimir todas as semanas")
+                        print("4 - Imprimir em arquivo txt\n5 - Sair")
                         opc = 0
-                        while opc not in [1,2,3,4]:
+                        while opc not in [1,2,3,4,5]:
                             opc = entrada_int("\n->")
-                            if opc not in [1,2,3,4]:
-                                print("Por favor, digite somente os 1, 2, 3 ou 4!")
+                            if opc not in [1,2,3,4,5]:
+                                print("Por favor, digite somente os 1, 2, 3, 4 ou 5!")
                         if opc == 1:
                             adicionar_itens(mes, mes["ultimo acesso"])
                         elif opc == 2:
@@ -84,6 +84,9 @@ def menu_gerenciador(nome, mes={}):
                             for x in range(mes["ultimo acesso"]+1):
                                 imprimir_mapa(nome, mes, x)
                             input("Dê enter para voltar...")
+                        elif opc == 4:
+                            imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
+                            time.sleep(1.25)
                     while opc != 3 and mes["finalizado"] == True:
                         clear()
                         print("Última semana do mapa financeiro")
@@ -101,12 +104,14 @@ def menu_gerenciador(nome, mes={}):
                             input("Dê enter para voltar...")
                         elif opc == 2:
                             clear()
-                            imprimir_txt_mapa(mes, nome)
+                            imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
                             time.sleep(1.25)
 
                     clear()
                 else:
+                    clear()
                     print("\nNão há mapa financeiro para carregar, por favor inicie uma!\n")
+                    time.sleep(1.5)
             clear()
         elif entrada == '3':
             financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))

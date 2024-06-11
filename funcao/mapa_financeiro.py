@@ -67,7 +67,7 @@ def imprimir_mapa(nome, mes, semana):
         print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]}/{data.month}")
     print()
 
-def imprimir_txt_mapa(mes, nome):
+def imprimir_txt_mapa(mes, nome, semana):
     with open("Mapa financeiro.txt", "w") as file:
         file.write("")
     with open("Mapa financeiro.txt", "a") as file:
@@ -76,10 +76,10 @@ def imprimir_txt_mapa(mes, nome):
         saldo_total_m = 0
         data = datetime.date(mes["data inicial"][2],mes["data inicial"][1],mes["data inicial"][0])
         data_atual = datetime.date.today()
-        for x in mes["semanas"]:
-            for y in x["itens"]:
+        for x in range(semana+1):
+            for y in mes["semanas"][x]["itens"]:
                 gasto_t += y[1]
-            for y in x["extra_i"]:
+            for y in mes["semanas"][x]["extra_i"]:
                 extra_t += y[1]
         saldo_total_m = mes["saldo inicial"]+extra_t-gasto_t
         file.writelines(f"Mapa financeiro de {nome} iniciado em {data.day}/{data.month}/{data.year}\n")
@@ -87,8 +87,8 @@ def imprimir_txt_mapa(mes, nome):
         file.writelines(f"Saldo total do mês: R${saldo_total_m:.2f}\n")
         file.writelines(f"Gasto total do mês: R${gasto_t:.2f}\n")
         file.writelines(f"Renda extra total do mês: {extra_t:.2f}\n")
-        file.writelines(f"\nSemanas do dia 1/{data.month} á {mes["semanas"][-1]["ultimo dia"]}/{data.month}\n\n")
-        for x in range(len(mes["semanas"])):
+        file.writelines(f"\nSemanas do dia 1/{data.month} á {mes["semanas"][semana]["ultimo dia"]}/{data.month}\n\n")
+        for x in range(semana+1):
             gasto = 0
             extra = 0
             saldo_total = 0

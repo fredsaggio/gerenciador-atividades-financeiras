@@ -1,11 +1,11 @@
-Mapa financeiro de Rodrigo iniciado em 10/6/2024
+Mapa financeiro de Rodrigo iniciado em 11/6/2024
 
 Saldo inicial do mês: R$5000.00
-Saldo total do mês: R$3600.00
-Gasto total do mês: R$1400.00
+Saldo total do mês: R$5000.00
+Gasto total do mês: R$0.00
 Renda extra total do mês: 0.00
 
-Semanas do dia 1/6 á 30/6
+Semanas do dia 1/6 á 16/6
 
 semana 1/6 - 2/6:
 	Saldo inicial da semana: R$0.00
@@ -21,23 +21,8 @@ semana 2/6 - 9/6:
 
 semana 9/6 - 16/6:
 	Saldo inicial da semana: R$1666.67
-	Saldo total: R$1166.67
-	Gasto da semana: R$500.00
-	 - Gasto 1: tete = R$500.00
+	Saldo total: R$1666.67
+	Gasto da semana: R$0.00
 	Renda extra: R$0.00
 
-semana 16/6 - 23/6:
-	Saldo inicial da semana: R$1666.67
-	Saldo total: R$1066.67
-	Gasto da semana: R$600.00
-	 - Gasto 1: asdf = R$600.00
-	Renda extra: R$0.00
-
-semana 23/6 - 30/6:
-	Saldo inicial da semana: R$3900.00
-	Saldo total: R$3600.00
-	Gasto da semana: R$300.00
-	 - Gasto 1: fgghg = R$300.00
-	Renda extra: R$0.00
-
-Arquivo txt criado no dia 10/6/2024
+Arquivo txt criado no dia 11/6/2024
