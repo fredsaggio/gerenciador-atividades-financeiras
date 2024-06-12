@@ -139,10 +139,14 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                         print(f"Semana {x+1}")
                         adicionar_itens(mes, x)
                         clear()
-                        adicionar_item(mes, x, 1)
+                        print(f"Semana {x+1}")
+                        adicionar_itens(mes, x, 1)
                         clear()
                 print(f"Semana {semana_atual}")
                 adicionar_itens(mes, semana_atual-1)
+                clear()
+                print(f"Semana {semana_atual}")
+                adicionar_itens(mes, semana_atual-1, 1)
                 clear()
             saldo_acumulado = 0
             for x in range(semana_atual):
@@ -178,7 +182,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
         elif opc == 1:
             opc = 0
             while opc not in [1,2]:
-                print(f"\nDeseja adicionar algum gasto dessa{aux} ultima{aux} semana{aux}?\n1 - Sim\n2 - Não")
+                print(f"\nDeseja adicionar algum item dessa{aux} ultima{aux} semana{aux}?\n1 - Sim\n2 - Não")
                 opc = entrada_int("->")
                 if opc not in [1,2]:
                     print("Por favor, digite apenas \'1\' ou \'2\'!")
@@ -188,6 +192,9 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                     if mes["semanas"][x]["saldo"] != 0 and mes["semanas"][x]["gasto"] == 0:
                         print(f"Semana {x+1}")
                         adicionar_itens(mes, x)
+                        clear()
+                        print(f"Semana {x+1}")
+                        adicionar_itens(mes, x, 1)
                         clear()
             saldo_acumulado = 0
             for x in range(len(mes["semanas"])-1):
@@ -223,7 +230,7 @@ def adicionar_itens(mes, semana, itens=0):
             aux = "do gasto no"
         else:
             aux = "da renda extra na"
-        nome = input(f"\nDigite o nome {aux} qual deseja adicionar.\n Para sair da função deixe a linha em branco e aperte enter.\n->").strip()
+        nome = input(f"\nDigite o nome {aux} qual deseja adicionar.\n Para sair aperte enter.\n->").strip()
         if nome == '':
             break
         while valor <= 0:

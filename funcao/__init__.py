@@ -167,6 +167,8 @@ def menu_gerenciador(nome, dados_perfil):
             elif opc == 2:
                 if len(mes) > 0:
                     atualizar_mapa(mes)
+                    dados_perfil[nome] = mes
+                    armazenarDados('dados/dados.json', dados_perfil)
                     opc = 0
                     while opc != 5 and mes["finalizado"] == False:
                         clear()
@@ -191,6 +193,8 @@ def menu_gerenciador(nome, dados_perfil):
                         elif opc == 4:
                             imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
                             time.sleep(1.25)
+                        dados_perfil[nome] = mes
+                        armazenarDados('dados/dados.json', dados_perfil)
                     while opc != 3 and mes["finalizado"] == True:
                         clear()
                         print("Última semana do mapa financeiro")
@@ -210,14 +214,11 @@ def menu_gerenciador(nome, dados_perfil):
                             clear()
                             imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
                             time.sleep(1.25)
-
                     clear()
                 else:
                     clear()
                     print("\nNão há mapa financeiro para carregar, por favor inicie uma!\n")
                     time.sleep(1.5)
-            dados_perfil[nome] = mes
-            armazenarDados('dados/dados.json', dados_perfil)
             clear()
         elif entrada == '3':
             financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))
