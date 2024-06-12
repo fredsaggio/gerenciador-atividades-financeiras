@@ -1,7 +1,7 @@
 Bem-vindo ao GAF, seu gerenciador de atividades financeiras!
 Me diga o que deseja fazer e farei o trabalho para poupar seu tempo.
 
-1- Saldo restante após pagamentos
-2- Mapa para gerenciar finanças
-3- Simulações de investimento
-4- Voltar ao menu de perfil
+1 - Saldo restante após pagamentos
+2 - Mapa para gerenciar finanças
+3 - Simulações de investimento
+4 - Voltar ao menu de perfil

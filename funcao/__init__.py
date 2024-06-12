@@ -2,7 +2,10 @@ from .arquivosload import *
 from .investimento import *
 from .gerenciador import *
 from .mapa_financeiro import *
+from os import mkdir
 
+if not os.path.exists("dados"):
+    mkdir("dados")
 dados_perfil = carregarDados('dados/dados.json')
 
 def menu_registro(dados_perfil):
@@ -81,7 +84,7 @@ def excluir_usuario(dados_perfil):
         print('Lista de perfis:')
         for i in dados_perfil:
             print(i)
-        print('Para sair, aperte "enter"')
+        print('\nPara sair, aperte "enter"')
         perfil_excluir = input('Qual perfil você deseja excluir? ').strip()
 
         if perfil_excluir not in dados_perfil:

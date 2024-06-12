@@ -12,14 +12,26 @@ def main():
 
         # Login
         elif opcao == '1':
-            menu_login()
+            if len(dados_perfil) > 0:
+                menu_login()
+            else:
+                clear()
+                print("Não existe nenhum usuário para acessar! Por favor, crie um.")
+                time.sleep(2)
+                clear()
             
         # Registro
         elif opcao == '2':
             menu_registro(dados_perfil)
             
         elif opcao == '3':
-            excluir_usuario(dados_perfil)
+            if len(dados_perfil) > 0:
+                excluir_usuario(dados_perfil)
+            else:
+                clear()
+                print("Não existe nenhum usuário para exluir!!")
+                time.sleep(2)
+                clear()
 
         # Sair do programa
         else:
