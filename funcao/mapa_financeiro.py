@@ -44,34 +44,35 @@ def imprimir_mapa(nome, mes, semana):
         extra += x[1]
     saldo_total = mes["semanas"][semana]["saldo"]+extra-gasto
     print(f"Semana {semana+1}:")
-    print(f"\tSaldo inicial da semana: R${mes["semanas"][semana]["saldo"]:.2f}")
-    print(f"\tSaldo restante: R${saldo_total:.2f}")
-    print(f"\tGasto da semana: R${gasto:.2f}")
+    print(f"\tSaldo inicial da semana: R${mes["semanas"][semana]["saldo"]:,.2f}")
+    print(f"\tSaldo restante: R${saldo_total:,.2f}")
+    print(f"\tGasto da semana: R${gasto:,.2f}")
     for x in mes["semanas"][semana]["itens"]:
-        print(f"\t - gasto {x[2]}/{data.month}: {x[0]} = R${x[1]:.2f}")
-    print(f"\tRenda extra: R${extra:.2f}")
+        print(f"\t - gasto {x[2]:02}/{data.month:02}: {x[0]} = R${x[1]:,.2f}")
+    print(f"\tRenda extra: R${extra:,.2f}")
     for x in mes["semanas"][semana]["extra_i"]:
-        print(f"\t - Extra {x[2]}/{data.month}: {x[0]} = R${x[1]:.2f}")
+        print(f"\t - Extra {x[2]:02}/{data.month:02}: {x[0]} = R${x[1]:,.2f}")
     if data.year == atual.year and data.month == atual.month:
         if mes["semanas"][semana]["ultimo dia"] == atual.day:
             print("Essa semana terminara HOJE!")
         elif mes["semanas"][semana]["ultimo dia"] > atual.day:
-            print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]} desse mês.")
+            print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]:02} desse mês.")
         else:
-            print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]} desse mês.")
+            print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]:02} desse mês.")
     else:
-        print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]}/{data.month}")
+        print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]:02}/{data.month:02}")
     print()
 
 def imprimir_txt_mapa(mes, nome, semana):
-    with open("Mapa financeiro.txt", "w", encoding='utf-8') as file:
+    data_atual = datetime.date.today()
+    txt = f"{nome}_{data_atual.day:02}\\{data_atual.month:02}\\{data_atual.year:02}.txt"
+    with open(txt, "w", encoding='utf-8') as file:
         file.write("")
-    with open("Mapa financeiro.txt", "a", encoding='utf-8') as file:
+    with open(txt, "a", encoding='utf-8') as file:
         gasto_t = 0
         extra_t = 0
         saldo_total_m = 0
         data = datetime.date(mes["data inicial"][2],mes["data inicial"][1],mes["data inicial"][0])
-        data_atual = datetime.date.today()
         for x in range(semana+1):
             for y in mes["semanas"][x]["itens"]:
                 gasto_t += y[1]
@@ -82,12 +83,12 @@ def imprimir_txt_mapa(mes, nome, semana):
         else:
             aux = "até agora"
         saldo_total_m = mes["saldo inicial"]+extra_t-gasto_t
-        file.writelines(f"Mapa financeiro de {nome} iniciado em {data.day}/{data.month}/{data.year}\n")
-        file.writelines(f"\nSaldo inicial do mês: R${mes["saldo inicial"]:.2f}\n")
-        file.writelines(f"Saldo restante {aux}: R${saldo_total_m:.2f}\n")
-        file.writelines(f"Gasto total {aux}: R${gasto_t:.2f}\n")
-        file.writelines(f"Renda extra total {aux}: {extra_t:.2f}\n")
-        file.writelines(f"\nSemanas do dia 1/{data.month} á {mes["semanas"][semana]["ultimo dia"]}/{data.month}\n\n")
+        file.writelines(f"Mapa financeiro de {nome} iniciado em {data.day:02}/{data.month:02}/{data.year:02}\n")
+        file.writelines(f"\nSaldo inicial do mês: R${mes["saldo inicial"]:,.2f}\n")
+        file.writelines(f"Saldo restante {aux}: R${saldo_total_m:,.2f}\n")
+        file.writelines(f"Gasto total {aux}: R${gasto_t:,.2f}\n")
+        file.writelines(f"Renda extra total {aux}: {extra_t:,.2f}\n")
+        file.writelines(f"\nSemanas do dia 1/{data.month:02} á {mes["semanas"][semana]["ultimo dia"]:02}/{data.month:02}\n\n")
         for x in range(semana+1):
             gasto = 0
             extra = 0
@@ -98,20 +99,20 @@ def imprimir_txt_mapa(mes, nome, semana):
                 extra += y[1]
             saldo_total = mes["semanas"][x]["saldo"]+extra-gasto
             if x == 0:
-                file.writelines(f"semana 1/{data.month} - {mes["semanas"][x]["ultimo dia"]}/{data.month}:\n")
+                file.writelines(f"semana 1/{data.month:02} - {mes["semanas"][x]["ultimo dia"]:02}/{data.month:02}:\n")
             else:
-                file.writelines(f"semana {mes["semanas"][x-1]["ultimo dia"]}/{data.month} - {mes["semanas"][x]["ultimo dia"]}/{data.month}:\n")
-            file.writelines(f"\tSaldo inicial da semana: R${mes["semanas"][x]["saldo"]:.2f}\n")
-            file.writelines(f"\tSaldo total: R${saldo_total:.2f}\n")
-            file.writelines(f"\tGasto da semana: R${gasto:.2f}\n")
+                file.writelines(f"semana {mes["semanas"][x-1]["ultimo dia"]:02}/{data.month:02} - {mes["semanas"][x]["ultimo dia"]:02}/{data.month:02}:\n")
+            file.writelines(f"\tSaldo inicial da semana: R${mes["semanas"][x]["saldo"]:,.2f}\n")
+            file.writelines(f"\tSaldo total: R${saldo_total:,.2f}\n")
+            file.writelines(f"\tGasto da semana: R${gasto:,.2f}\n")
             for y in mes["semanas"][x]["itens"]:
-                file.writelines(f"\t - Gasto {y[2]}/{data.month}: {y[0]} = R${y[1]:.2f}\n")
-            file.writelines(f"\tRenda extra: R${extra:.2f}\n")
+                file.writelines(f"\t - Gasto {y[2]:02}/{data.month:02}: {y[0]} = R${y[1]:,.2f}\n")
+            file.writelines(f"\tRenda extra: R${extra:,.2f}\n")
             for y in mes["semanas"][x]["extra_i"]:
-                file.writelines(f"\t - Extra {y[2]}/{data.month}: {y[0]} = R${y[1]:.2f}\n")
+                file.writelines(f"\t - Extra {y[2]:02}/{data.month:02}: {y[0]} = R${y[1]:,.2f}\n")
             file.writelines("\n")
-        file.writelines(f"Arquivo txt criado no dia {data_atual.day}/{data_atual.month}/{data_atual.year}")
-    print("arquivo \"Mapa financeiro.txt\" criado com secesso!")
+        file.writelines(f"Arquivo txt criado no dia {data_atual.day:02}/{data_atual.month:02}/{data_atual.year:02}")
+    print(f"arquivo \"{txt}\" criado com secesso!")
 
 def atualizar_mapa(mes, data_atual=datetime.date.today()):
     data = datetime.date(mes["data inicial"][2],mes["data inicial"][1],mes["data inicial"][0])

@@ -39,8 +39,12 @@ def menu_login():
     time.sleep(1.25) 
     
     while True:  
-        clear() 
-        usuario = input('Digite seu nome de usuário: ') 
+        clear()
+        print("Usuários existentes:")
+        for x in dados_perfil:
+            print(f"\t-{x}")
+        print("\nDê enter para sair.")
+        usuario = input('Digite seu nome de usuário: ').strip()
         
         # Verifica se o perfil está dentro do dicionário
         if usuario in dados_perfil:
@@ -48,7 +52,9 @@ def menu_login():
             time.sleep(1.25)  
             clear()  
             menu_gerenciador(usuario, dados_perfil)  # Chama o menu do GAF
-            break  
+            break
+        elif usuario == "":
+            break
         else:
             print('Esse perfil não existe.')
             time.sleep(1)  
@@ -76,7 +82,7 @@ def excluir_usuario(dados_perfil):
         for i in dados_perfil:
             print(i)
         print('Para sair, aperte "enter"')
-        perfil_excluir = input('Qual perfil você deseja excluir? ')
+        perfil_excluir = input('Qual perfil você deseja excluir? ').strip()
 
         if perfil_excluir not in dados_perfil:
             print('Esse perfil não existe.')
@@ -106,10 +112,10 @@ def excluir_usuario(dados_perfil):
 
 def menu_gerenciador(nome, dados_perfil):
     mes = dados_perfil[nome]
+    opc = 0
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
-        
         if entrada == '1':
             clear()
             print("Preencha com seus dados de acordo com a indicação abaixo.")
