@@ -1,7 +1,8 @@
 ---------------------
   Bem vindo ao GAF!
 ---------------------
-1- Login
-2- Registro de conta
-3- Sair
+1- Acessar perfil
+2- Criar um perfil
+3- Excluir um perfil
+4- Sair
 ---------------------

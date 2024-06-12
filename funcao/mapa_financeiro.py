@@ -64,9 +64,9 @@ def imprimir_mapa(nome, mes, semana):
     print()
 
 def imprimir_txt_mapa(mes, nome, semana):
-    with open("Mapa financeiro.txt", "w") as file:
+    with open("Mapa financeiro.txt", "w", encoding='utf-8') as file:
         file.write("")
-    with open("Mapa financeiro.txt", "a") as file:
+    with open("Mapa financeiro.txt", "a", encoding='utf-8') as file:
         gasto_t = 0
         extra_t = 0
         saldo_total_m = 0

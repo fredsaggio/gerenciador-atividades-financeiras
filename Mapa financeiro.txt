@@ -1,9 +1,9 @@
-Mapa financeiro de Rodrigo iniciado em 11/6/2024
+Mapa financeiro de gafseuamiguinho iniciado em 11/6/2024
 
 Saldo inicial do mês: R$5000.00
-Saldo total do mês: R$5000.00
-Gasto total do mês: R$0.00
-Renda extra total do mês: 0.00
+Saldo restante até agora: R$4500.00
+Gasto total até agora: R$1000.00
+Renda extra total até agora: 500.00
 
 Semanas do dia 1/6 á 16/6
 
@@ -21,8 +21,10 @@ semana 2/6 - 9/6:
 
 semana 9/6 - 16/6:
 	Saldo inicial da semana: R$1666.67
-	Saldo total: R$1666.67
-	Gasto da semana: R$0.00
-	Renda extra: R$0.00
+	Saldo total: R$1166.67
+	Gasto da semana: R$1000.00
+	 - Gasto 11/6: biclcleta = R$1000.00
+	Renda extra: R$500.00
+	 - Extra 11/6: tigrinho = R$500.00
 
 Arquivo txt criado no dia 11/6/2024

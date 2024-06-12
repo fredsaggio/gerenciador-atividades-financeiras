@@ -28,7 +28,7 @@ def carregarDados(arquivo):
     
 # Função para armazenar os dados após finalizar o programa
 def armazenarDados(arquivo, conteudo):
-    with open(arquivo, 'a', encoding='utf-8') as arquivoo:
+    with open(arquivo, 'w', encoding='utf-8') as arquivoo:
         json.dump(conteudo, arquivoo)
 
 def validar_entrada(entrada, valor):

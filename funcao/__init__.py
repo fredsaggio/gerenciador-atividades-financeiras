@@ -3,11 +3,109 @@ from .investimento import *
 from .gerenciador import *
 from .mapa_financeiro import *
 
-def login_simples():
-    menu_gerenciador("Rodrigo")
+dados_perfil = carregarDados('dados/dados.json')
+
+def menu_registro(dados_perfil):
+    while True:
+        clear()
+        registrar_usuario = input('Digite um nome de usuário para registro: ')
+
+        if registrar_usuario in dados_perfil: 
+            print('Este nome de usuário já existe.')
+            time.sleep(1.25)
+            continue
+
+        if len(registrar_usuario) < 5:
+            print('Seu nome de usuário deve conter no mínimo 5 caracteres.')
+            time.sleep(1.25)
+            continue
+        
+        print('Criando conta...')
+        dados = {registrar_usuario: {}} 
+        dados_perfil.update(dados)
+        time.sleep(1.25)
+
+        clear()
+        print('Perfil criado!')
+        armazenarDados('dados/dados.json', dados_perfil)
+        time.sleep(0.5)
+        print('Voltando ao menu principal...')
+        time.sleep(1.25)
+        break
+
+def menu_login():
+    clear() 
+    print('Direcionando ao login...')
+    time.sleep(1.25) 
+    
+    while True:  
+        clear() 
+        usuario = input('Digite seu nome de usuário: ') 
+        
+        # Verifica se o perfil está dentro do dicionário
+        if usuario in dados_perfil:
+            print('Entrando no perfil...')
+            time.sleep(1.25)  
+            clear()  
+            menu_gerenciador(usuario, dados_perfil)  # Chama o menu do GAF
+            break  
+        else:
+            print('Esse perfil não existe.')
+            time.sleep(1)  
+            clear()  
+            while True:
+                opcao = input('Deseja tentar novamente? [s/n]').strip().lower()
+                if opcao in ['s', 'sim', 'si', 'y', 'yes']:
+                    break  
+                elif opcao in ['n', 'não', 'no']:
+                    print('Voltando ao menu principal...')
+                    time.sleep(1.25)  
+                    break  
+                else:
+                    print('Valor inválido.')    
+                    time.sleep(1.25)  
+                    clear() 
+            if opcao == 'n':
+                break 
+
+def excluir_usuario(dados_perfil):
+    perfil_excluir = 'Salve professor'
+    while perfil_excluir != '':
+        print('-'*30)
+        print('Lista de perfis:')
+        for i in dados_perfil:
+            print(i)
+        print('Para sair, aperte "enter"')
+        perfil_excluir = input('Qual perfil você deseja excluir? ')
+
+        if perfil_excluir not in dados_perfil:
+            print('Esse perfil não existe.')
+        else:
+            confirmar = input('Tem certeza que deseja excluir esse perfil? [s/n]: ').strip().lower()
+
+            if confirmar in ['s', 'sim', 'si', 'yes', 'y']:
+                print('Perfil excluído.')
+                dados_perfil.pop(perfil_excluir)
+                armazenarDados('dados/dados.json', dados_perfil)
+                time.sleep(1.25)
+                break
+
+            elif confirmar in ['n', 'não', 'nao', 'no']:
+                print('Voltando ao menu principal...')
+                time.sleep(1.25)
+                break
+            else:
+                print('Valor inválido.')
+                time.sleep(1.25)
+            # If pra sair do loop principal
+            if confirmar in ['s', 'sim', 'si', 'yes']:
+                break
+            
 
 
-def menu_gerenciador(nome, mes={}):
+
+def menu_gerenciador(nome, dados_perfil):
+    mes = dados_perfil[nome]
     while True:
         lerArquivo('arquivostexto/menu.txt')
         entrada = input('\nEscolha uma das opções acima: ')
@@ -44,7 +142,7 @@ def menu_gerenciador(nome, mes={}):
                     print("Valor inválido")
             if sair_programa == 1:
                 break
-        #essas funções ainda não estão prontas
+        
         elif entrada == '2':
             opc = 0
             print("\nBem vindo, ao mapa financeiro\n")
@@ -112,6 +210,8 @@ def menu_gerenciador(nome, mes={}):
                     clear()
                     print("\nNão há mapa financeiro para carregar, por favor inicie uma!\n")
                     time.sleep(1.5)
+            dados_perfil[nome] = mes
+            armazenarDados('dados/dados.json', dados_perfil)
             clear()
         elif entrada == '3':
             financiamento(entrada_float("Por favor digite o saldo no qual deseja investir: "))
