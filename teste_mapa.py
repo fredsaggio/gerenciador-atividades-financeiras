@@ -2,7 +2,7 @@ from funcao import *
 import datetime
 import calendar
 
-tempo = datetime.date(2024, 6, 28)
+tempo = datetime.date(2025, 6, 28)
 mes = init_mes()
 atualizar_mapa(mes, tempo)
 

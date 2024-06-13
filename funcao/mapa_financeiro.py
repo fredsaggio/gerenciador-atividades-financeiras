@@ -210,6 +210,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                         adicionar_itens(mes, x, 1)
                         clear()
             saldo_acumulado = 0
+            gasto = extra = 0
             for x in range(len(mes["semanas"])-1):
                 if mes["semanas"][x]["saldo"] != 0 and mes["semanas"][x]["gasto"] == 0:
                     for y in mes["semanas"][x]["itens"]:

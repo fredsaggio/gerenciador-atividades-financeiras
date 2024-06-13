@@ -222,6 +222,8 @@ def menu_gerenciador(nome, dados_perfil):
                             input("Dê enter para voltar...")
                         elif opc == 2:
                             clear()
+                            if not os.path.exists("mapa_financeiros"):
+                                mkdir("mapas_financeiros")
                             imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
                             time.sleep(1.25)
                     clear()
@@ -241,5 +243,8 @@ def menu_gerenciador(nome, dados_perfil):
             time.sleep(1.25)
             break
         else:
+            clear()
             print("Valor inválido.")
+            time.sleep(1.25)
+            clear()
 
