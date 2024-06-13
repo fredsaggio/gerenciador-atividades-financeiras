@@ -39,7 +39,7 @@ def menu_registro(dados_perfil):
 def menu_login():
     clear() 
     print('Direcionando ao login...')
-    time.sleep(1.25) 
+    time.sleep(1) 
     
     while True:  
         clear()
@@ -51,6 +51,7 @@ def menu_login():
         
         # Verifica se o perfil está dentro do dicionário
         if usuario in dados_perfil:
+            clear()
             print('Entrando no perfil...')
             time.sleep(1.25)  
             clear()  
@@ -84,6 +85,7 @@ def excluir_usuario(dados_perfil):
         print('Lista de perfis:')
         for i in dados_perfil:
             print(i)
+        print('-'*30)
         print('\nPara sair, aperte "enter"')
         perfil_excluir = input('Qual perfil você deseja excluir? ').strip()
 
@@ -111,8 +113,6 @@ def excluir_usuario(dados_perfil):
                 break
             
 
-
-
 def menu_gerenciador(nome, dados_perfil):
     mes = dados_perfil[nome]
     opc = 0
@@ -127,25 +127,28 @@ def menu_gerenciador(nome, dados_perfil):
             produtos = []
             dividas = 0.0
             for i in range(quantidade):
+                clear()
                 nome_divida = input(f"Me diga o NOME da dívida/produto {i+1}: ")
-                valor_divida = entrada_float(f"qual o VALOR da dívida/produto {i+1}: ")
+                valor_divida = entrada_float(f"Qual o VALOR da dívida/produto {i+1}: ")
                 dividas += valor_divida
                 produtos.append((nome_divida, valor_divida))
+            clear()
             for nome_divida, valor_divida in produtos:
                 print(f"Gasto: {nome_divida}, Valor: R$ {valor_divida:.2f}")
             print(f"O saldo restante para gastos é R$ {saldo - dividas:.2f}")
-            continuar = entrada_int("Deseja continuar no GAF? 1. sim ou 2. não: ")
+            continuar = input("Deseja continuar no GAF? [s/n]: ")
             sair_programa = 0
             while True:
-                if continuar == 2:
+                if continuar in ['n', 'não', 'nao', 'no']:
                     clear()
                     print("Obrigado por usar nossa plataforma GAF!\nGAF: O seu amigo das finanças ;)!")
                     sair_programa = 1
                     break
-                elif continuar == 1:
+                elif continuar in ['s', 'sim', 'si', 'yes', 'y']:
                     clear()
                     print("Voltando...")
                     time.sleep(1.25)
+                    clear()
                     break
                 else:
                     print("Valor inválido")
@@ -153,8 +156,9 @@ def menu_gerenciador(nome, dados_perfil):
                 break
         
         elif entrada == '2':
+            clear()
             opc = 0
-            print("\nBem vindo, ao mapa financeiro\n")
+            print("\nBem vindo ao mapa financeiro\n")
             print("1 - Criar novo mapa")
             print("2 - Carregar um existente")
             print("3 - Sair da função")
@@ -168,6 +172,7 @@ def menu_gerenciador(nome, dados_perfil):
                 print()
                 imprimir_mapa(nome, mes, mes["ultimo acesso"])
             elif opc == 2:
+                clear()
                 if len(mes) > 0:
                     atualizar_mapa(mes)
                     dados_perfil[nome] = mes
@@ -194,6 +199,8 @@ def menu_gerenciador(nome, dados_perfil):
                                 imprimir_mapa(nome, mes, x)
                             input("Dê enter para voltar...")
                         elif opc == 4:
+                            if not os.path.exists('mapas_financeiros'):
+                                mkdir('mapas_financeiros')
                             imprimir_txt_mapa(mes, nome, mes["ultimo acesso"])
                             time.sleep(1.25)
                         dados_perfil[nome] = mes

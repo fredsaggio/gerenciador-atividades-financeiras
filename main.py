@@ -8,7 +8,8 @@ def main():
 
         if not opcao.isnumeric() or int(opcao) not in range(1, 5):
             print('\nvalor inválido')
-            time.sleep(1.5)
+            time.sleep(1)
+            clear()
 
         # Login
         elif opcao == '1':
@@ -17,7 +18,7 @@ def main():
             else:
                 clear()
                 print("Não existe nenhum usuário para acessar! Por favor, crie um.")
-                time.sleep(2)
+                time.sleep(1.5)
                 clear()
             
         # Registro
@@ -25,12 +26,13 @@ def main():
             menu_registro(dados_perfil)
             
         elif opcao == '3':
+            clear()
             if len(dados_perfil) > 0:
                 excluir_usuario(dados_perfil)
             else:
                 clear()
-                print("Não existe nenhum usuário para exluir!!")
-                time.sleep(2)
+                print("Não existe nenhum usuário para exluir.")
+                time.sleep(1.5)
                 clear()
 
         # Sair do programa
@@ -51,7 +53,7 @@ def main():
                     break
                 else:
                     print('Valor inválido.')
-                    time.sleep(1.25)
+                    time.sleep(1)
             # If pra sair do loop principal
             if confirmar in ['s', 'sim', 'si', 'yes']:
                 break

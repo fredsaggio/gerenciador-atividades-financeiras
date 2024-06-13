@@ -1,3 +1,14 @@
+
+                  /$$$$$$   /$$$$$$  /$$$$$$$$
+                 /$$__  $$ /$$__  $$| $$_____/
+                | $$  \__/| $$  \ $$| $$      
+                | $$ /$$$$| $$$$$$$$| $$$$$   
+                | $$|_  $$| $$__  $$| $$__/   
+                | $$  \ $$| $$  | $$| $$      
+                |  $$$$$$/| $$  | $$| $$      
+                 \______/ |__/  |__/|__/                                   
+       
+                                                         
 Bem-vindo ao GAF, seu gerenciador de atividades financeiras!
 Me diga o que deseja fazer e farei o trabalho para poupar seu tempo.
 

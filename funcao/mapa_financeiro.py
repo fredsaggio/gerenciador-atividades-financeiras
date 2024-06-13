@@ -4,9 +4,11 @@ from os.path import exists
 from math import ceil
 from .gerenciador import *
 
+# Função para inicializar o mês
 def init_mes():
     atual = datetime.date.today()
     sal = 0
+    # Dicionário que armazenará as informações do mês
     mes = {"data inicial":[atual.day, atual.month, atual.year],"ultimo acesso":0 ,"saldo inicial":0,"semanas":[], "finalizado": False}
     print("Quanto é o saldo que sera distribuido durante o mês no mapa financeiro?")
     while sal <= 0:
@@ -15,6 +17,7 @@ def init_mes():
             print("O saldo inicial não pode ser negativo!")
     mes["saldo inicial"] = sal
     ultimo_dia = calendar.monthrange(atual.year, atual.month)[1]
+    # Dividindo o mês em semanas
     for y in range(ceil(ultimo_dia/7)):
         mes["semanas"].append({"saldo":0,"gasto":0, "extra":0,"ultimo dia":0,"itens":[], "extra_i":[]})
     cont = 0
@@ -23,21 +26,19 @@ def init_mes():
             mes["semanas"][cont]["ultimo dia"] = y
             cont += 1
     mes["semanas"][-1]["ultimo dia"] = ultimo_dia
-    for y in range(len(mes["semanas"])):#   procura saber em qual semana estamos
-        if atual.day < mes["semanas"][y]["ultimo dia"]:
-            semana = y
-            mes["ultimo acesso"] = semana
-            break
-    for y in range(y, len(mes["semanas"])):#    destribui o saldo
-        mes["semanas"][y]["saldo"] = sal/(len(mes["semanas"])-semana)
+    # Distribuindo o saldo entre as semanas
+    for y in range(len(mes["semanas"])):
+        mes["semanas"][y]["saldo"] = sal/(len(mes["semanas"]))
     return mes
 
+# Função para imprimir o mapa financeiro
 def imprimir_mapa(nome, mes, semana):
     data = datetime.date(mes["data inicial"][2],mes["data inicial"][1],mes["data inicial"][0])
     atual = datetime.date.today()
     gasto = 0
     extra = 0
     saldo_total = 0
+    # Calculando gastos e renda extra da semana
     for x in mes["semanas"][semana]["itens"]:
         gasto += x[1]
     for x in mes["semanas"][semana]["extra_i"]:
@@ -54,18 +55,19 @@ def imprimir_mapa(nome, mes, semana):
         print(f"\t - Extra {x[2]:02}/{data.month:02}: {x[0]} = R${x[1]:,.2f}")
     if data.year == atual.year and data.month == atual.month:
         if mes["semanas"][semana]["ultimo dia"] == atual.day:
-            print("Essa semana terminara HOJE!")
+            print("Essa semana terminará HOJE!")
         elif mes["semanas"][semana]["ultimo dia"] > atual.day:
-            print(f"Essa semana terminara no dia {mes["semanas"][semana]["ultimo dia"]:02} desse mês.")
+            print(f"Essa semana terminará no dia {mes["semanas"][semana]["ultimo dia"]:02} desse mês.")
         else:
             print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]:02} desse mês.")
     else:
         print(f"Essa semana terminou no dia {mes["semanas"][semana]["ultimo dia"]:02}/{data.month:02}")
     print()
 
+# Função para imprimir o mapa financeiro em um arquivo de texto
 def imprimir_txt_mapa(mes, nome, semana):
     data_atual = datetime.date.today()
-    txt = f"{nome}_{data_atual.day:02}\\{data_atual.month:02}\\{data_atual.year:02}.txt"
+    txt = f"mapas_financeiros/{nome}_mapa_financeiro.txt"
     with open(txt, "w", encoding='utf-8') as file:
         file.write("")
     with open(txt, "a", encoding='utf-8') as file:
@@ -88,7 +90,7 @@ def imprimir_txt_mapa(mes, nome, semana):
         file.writelines(f"Saldo restante {aux}: R${saldo_total_m:,.2f}\n")
         file.writelines(f"Gasto total {aux}: R${gasto_t:,.2f}\n")
         file.writelines(f"Renda extra total {aux}: {extra_t:,.2f}\n")
-        file.writelines(f"\nSemanas do dia 1/{data.month:02} á {mes["semanas"][semana]["ultimo dia"]:02}/{data.month:02}\n\n")
+        file.writelines(f"\nSemanas do dia 01/{data.month:02} á {mes["semanas"][semana]["ultimo dia"]:02}/{data.month:02}\n\n")
         for x in range(semana+1):
             gasto = 0
             extra = 0
@@ -99,7 +101,7 @@ def imprimir_txt_mapa(mes, nome, semana):
                 extra += y[1]
             saldo_total = mes["semanas"][x]["saldo"]+extra-gasto
             if x == 0:
-                file.writelines(f"semana 1/{data.month:02} - {mes["semanas"][x]["ultimo dia"]:02}/{data.month:02}:\n")
+                file.writelines(f"semana 01/{data.month:02} - {mes["semanas"][x]["ultimo dia"]:02}/{data.month:02}:\n")
             else:
                 file.writelines(f"semana {mes["semanas"][x-1]["ultimo dia"]:02}/{data.month:02} - {mes["semanas"][x]["ultimo dia"]:02}/{data.month:02}:\n")
             file.writelines(f"\tSaldo inicial da semana: R${mes["semanas"][x]["saldo"]:,.2f}\n")
@@ -114,26 +116,29 @@ def imprimir_txt_mapa(mes, nome, semana):
         file.writelines(f"Arquivo txt criado no dia {data_atual.day:02}/{data_atual.month:02}/{data_atual.year:02}")
     print(f"arquivo \"{txt}\" criado com secesso!")
 
+# Função para atualizar o mapa financeiro
 def atualizar_mapa(mes, data_atual=datetime.date.today()):
     data = datetime.date(mes["data inicial"][2],mes["data inicial"][1],mes["data inicial"][0])
     aux = ''
     aux2 = ''
-    opc = 0
+    opc = ''
+    # Verificação do momento para atualizar o mapa
     if data_atual.year == data.year and data.month == data_atual.month:
         for y in range(len(mes["semanas"])):#   procura saber em qual semana estamos
             if data_atual.day < mes["semanas"][y]["ultimo dia"]:
                 semana_atual = y
                 break
+        # Verificando se houve semanas passadas desde o último acesso
         if semana_atual > mes["ultimo acesso"]:
             if semana_atual - mes["ultimo acesso"] > 1:
                 aux = 's'
             print(f"Notamos que já faz {semana_atual-mes["ultimo acesso"]} semana{aux} desde o último aceso")
-            while opc not in [1,2]:
-                print(f"Deseja adicionar algum item dessa{aux} ultima{aux} semana{aux}?\n1 - Sim\n2 - Não")
-                opc = entrada_int("->")
-                if opc not in [1,2]:
-                    print("Por favor, digite apenas \'1\' ou \'2\'!")
-            if opc == 1:
+            while opc not in ['n', 'não', 'nao', 'no', 's', 'sim', 'si', 'yes', 'y']:
+                print(f"Deseja adicionar algum item dessa{aux} última{aux} semana{aux}? [s/n]")
+                opc = input("-> ").strip().lower()
+                if opc not in ['n', 'não', 'nao', 'no', 's', 'sim', 'si', 'yes', 'y']:
+                    print('Valor inválido.')
+            if opc in ['s', 'sim', 'si', 'yes', 'y']:
                 if semana_atual-mes["ultimo acesso"] > 1:
                     for x in range(mes["ultimo acesso"], semana_atual-1):
                         print(f"Semana {x+1}")
@@ -162,6 +167,7 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
                     saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
             mes["semanas"][semana_atual]["saldo"] += saldo_acumulado
             mes["ultimo acesso"] = semana_atual
+    # Se o mês atual for maior que o mês do mapa e o mapa não estiver finalizado
     elif (data_atual.year > data.year or data_atual.month > data.month) and mes["finalizado"] == False:
         if data_atual.year-data.year > 1 or data_atual.month-data.month > 1:
             aux = 's'
@@ -169,59 +175,66 @@ def atualizar_mapa(mes, data_atual=datetime.date.today()):
         else:
             aux2 = 'mês'
         if data_atual.year == data.year:
-            print(f"Já se passou {data_atual.month-data.month} {aux2} desde o último acesso, deseja finalizar o mapa mental?")
+            print(f"Já se passou {data_atual.month-data.month} {aux2} desde o último acesso, deseja finalizar o mapa mental? [s/n]")
         else:
-            print(f"Já se passou {data_atual.year-data.year} ano{aux} desde o último acesso, deseja finalizar o mapa mental?")
-        print("Obs: caso não finalize deletaremos TODAS as informações do mapa serão perdidas!")
-        while opc not in [1, 2]:
-            opc = entrada_int("1 - sim\n2 - não\n->")
-            if opc not in [1, 2]:
-                print("Por favor, Digite somente 1 e 2!")
-        if opc == 2:
-            mes.clear()
-        elif opc == 1:
-            opc = 0
-            while opc not in [1,2]:
-                print(f"\nDeseja adicionar algum item dessa{aux} ultima{aux} semana{aux}?\n1 - Sim\n2 - Não")
-                opc = entrada_int("->")
-                if opc not in [1,2]:
-                    print("Por favor, digite apenas \'1\' ou \'2\'!")
-            if opc == 1:
-                clear()
-                for x in range(len(mes["semanas"])):
+            print(f"Já se passou {data_atual.year-data.year} ano{aux} desde o último acesso, deseja finalizar o mapa mental? [s/n]")
+        print("Obs: Caso não finalize, deletaremos TODAS as informações do mapa.")
+        while True:
+            opc = input("\n-> ").strip().lower()
+            if opc in ['n', 'não', 'nao', 'no']:
+                mes.clear()
+                break
+            elif opc in ['s', 'sim', 'si', 'yes', 'y']:
+                opc = 0
+                while True:
+                    print(f"\nDeseja adicionar algum item dessa{aux} última{aux} semana{aux}? [s/n]")
+                    opc = input("-> ")
+                    if opc in ['s', 'sim', 'si', 'yes', 'y']:
+                        clear()
+                        for x in range(len(mes["semanas"])):
+                            if mes["semanas"][x]["saldo"] != 0 and mes["semanas"][x]["gasto"] == 0:
+                                print(f"Semana {x+1}")
+                                adicionar_itens(mes, x)
+                                clear()
+                                print(f"Semana {x+1}")
+                                adicionar_itens(mes, x, 1)
+                                clear()
+                        break
+                    elif opc in ['n', 'não', 'nao', 'no']:
+                        break
+                    else:
+                        print('Valor inválido')
+
+                saldo_acumulado = 0  
+                for x in range(len(mes["semanas"])-1):
                     if mes["semanas"][x]["saldo"] != 0 and mes["semanas"][x]["gasto"] == 0:
-                        print(f"Semana {x+1}")
-                        adicionar_itens(mes, x)
-                        clear()
-                        print(f"Semana {x+1}")
-                        adicionar_itens(mes, x, 1)
-                        clear()
-            saldo_acumulado = 0
-            for x in range(len(mes["semanas"])-1):
-                if mes["semanas"][x]["saldo"] != 0 and mes["semanas"][x]["gasto"] == 0:
-                    for y in mes["semanas"][x]["itens"]:
-                        gasto += y[1]
-                    mes["semanas"][x]["gasto"] = gasto
-                    for y in mes["semanas"][x]["extra_i"]:
-                        extra += y[1]
-                    mes["semanas"][x]["extra"] = extra
-                    saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
-                gasto = 0
-                extra = 0
-            for y in mes["semanas"][-1]["itens"]:
-                gasto += y[1]
-            mes["semanas"][-1]["gasto"] = gasto
-            for y in mes["semanas"][-1]["extra_i"]:
-                extra += y[1]
-            mes["semanas"][-1]["extra"] = extra
-            mes["semanas"][-1]["saldo"] += saldo_acumulado
-            mes["ultimo acesso"] = len(mes["semanas"])-1
-            mes["finalizado"] = True
+                        for y in mes["semanas"][x]["itens"]:
+                            gasto += y[1]
+                        mes["semanas"][x]["gasto"] = gasto
+                        for y in mes["semanas"][x]["extra_i"]:
+                            extra += y[1]
+                        mes["semanas"][x]["extra"] = extra
+                        saldo_acumulado += mes["semanas"][x]["saldo"]-gasto+extra
+                    gasto = 0
+                    extra = 0
+                for y in mes["semanas"][-1]["itens"]:
+                    gasto += y[1]
+                mes["semanas"][-1]["gasto"] = gasto
+                for y in mes["semanas"][-1]["extra_i"]:
+                    extra += y[1]
+                mes["semanas"][-1]["extra"] = extra
+                mes["semanas"][-1]["saldo"] += saldo_acumulado
+                mes["ultimo acesso"] = len(mes["semanas"])-1
+                mes["finalizado"] = True
+                break
+            else:
+                print('Valor inválido.')
     elif mes["finalizado"] == True:
         print("Mapa financeiro Finalizada")
     else:
         print("Variável inválida")
 
+# Função para adicionar itens (gastos ou renda extra) ao mapa financeiro
 def adicionar_itens(mes, semana, itens=0):
     while True:
         valor = 0
@@ -241,4 +254,3 @@ def adicionar_itens(mes, semana, itens=0):
             mes["semanas"][semana]["extra_i"].append([nome,valor,dia])
         else:
             mes["semanas"][semana]["itens"].append([nome,valor,dia])
-
